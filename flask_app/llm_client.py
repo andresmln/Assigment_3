@@ -27,12 +27,17 @@ def build_messages(question: str, sources: List[Dict]) -> List[Dict]:
         )
     else:
         context_parts = []
+        # Truncate each chunk to ~250 words to fit within 2048 token context
+        max_words_per_chunk = 250
         for i, source in enumerate(sources, 1):
+            text = source['text']
+            words = text.split()
+            if len(words) > max_words_per_chunk:
+                text = " ".join(words[:max_words_per_chunk]) + "..."
             context_parts.append(
                 f"[Source {i}] (File: {source['filename']}, "
-                f"Chunk: {source['chunk_index']}, "
-                f"Relevance: {source['score']}):\n"
-                f"\"{source['text']}\""
+                f"Chunk: {source['chunk_index']}):\n"
+                f"\"{text}\""
             )
         context = "\n\n".join(context_parts)
         user_msg = f"Context:\n{context}\n\nQuestion: {question}"
@@ -56,7 +61,7 @@ def generate_answer(question: str, sources: List[Dict]) -> Dict:
             json={
                 "model": "tinyllama",
                 "messages": messages,
-                "max_tokens": 512,
+                "max_tokens": 256,
                 "temperature": 0.3,
                 "top_p": 0.9,
                 "stream": False,
