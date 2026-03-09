@@ -22,7 +22,7 @@ services:
     volumes:
       - /home/alumno/Desktop/datos/NLP/docker_assigment3/chroma:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"] #Antes era /api/v1/heartbeat
       interval: 10s
       timeout: 5s
       retries: 5
