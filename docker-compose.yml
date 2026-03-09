@@ -1,0 +1,85 @@
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: rag-minio
+    network_mode: "host"          # <--- Truco maestro: usar la red del PC
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - /home/alumno/Desktop/datos/NLP/docker_assigment3/minio:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: rag-chromadb
+    network_mode: "host"
+    volumes:
+      - /home/alumno/Desktop/datos/NLP/docker_assigment3/chroma:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  llm:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    container_name: rag-llm
+    network_mode: "host"
+    volumes:
+      - /home/alumno/Desktop/datos/NLP/docker_assigment3/models:/models
+    command: >
+      -m /models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+      --host 0.0.0.0
+      --port 8080
+      -c 2048
+      -ngl 0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  flask_app:
+    build:
+      context: ./flask_app
+      dockerfile: Dockerfile
+    container_name: rag-flask
+    network_mode: "host"
+    environment:
+      # Ahora todo apunta a localhost porque comparten la red del PC
+      - MINIO_ENDPOINT=localhost:9000 
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=documents
+      - CHROMADB_HOST=localhost
+      - CHROMADB_PORT=8000
+      - LLM_HOST=localhost
+      - LLM_PORT=8080
+      - FLASK_ENV=production
+    depends_on:
+      minio:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+      llm:
+        condition: service_healthy
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag-frontend
+    network_mode: "host"
+    environment:
+      # Apunta a localhost por la misma razón
+      - FLASK_API_URL=http://localhost:5000
+    depends_on:
+      - flask_app

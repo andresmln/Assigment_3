@@ -1,0 +1,127 @@
+{
+    "description": "Evaluation dataset for RAG document intelligence system. Contains questions with ground-truth answers and annotated relevant passages.",
+    "documents": [
+        {
+            "doc_id": "eval_doc_1",
+            "filename": "artificial_intelligence_overview.pdf",
+            "description": "A document about the history and concepts of artificial intelligence."
+        },
+        {
+            "doc_id": "eval_doc_2",
+            "filename": "climate_change_report.pdf",
+            "description": "A report on climate change causes, effects, and mitigation strategies."
+        },
+        {
+            "doc_id": "eval_doc_3",
+            "filename": "python_programming_guide.docx",
+            "description": "A guide covering Python programming fundamentals and best practices."
+        }
+    ],
+    "questions": [
+        {
+            "id": "q1",
+            "question": "What is the Turing Test?",
+            "expected_doc_id": "eval_doc_1",
+            "expected_answer": "The Turing Test is a measure of machine intelligence proposed by Alan Turing in 1950, where a machine must exhibit intelligent behavior indistinguishable from a human.",
+            "relevant_passage": "Alan Turing proposed the Turing Test in 1950 as a criterion for machine intelligence. In this test, a human evaluator judges natural language conversations between a human and a machine. If the evaluator cannot reliably distinguish the machine from the human, the machine is said to have passed the test."
+        },
+        {
+            "id": "q2",
+            "question": "What are neural networks?",
+            "expected_doc_id": "eval_doc_1",
+            "expected_answer": "Neural networks are computing systems inspired by biological neural networks in the brain, consisting of interconnected nodes that process information using connectionist approaches.",
+            "relevant_passage": "Neural networks are computing systems vaguely inspired by the biological neural networks that make up animal brains. These systems learn to perform tasks by considering examples, generally without being programmed with task-specific rules."
+        },
+        {
+            "id": "q3",
+            "question": "What is deep learning?",
+            "expected_doc_id": "eval_doc_1",
+            "expected_answer": "Deep learning is a subset of machine learning that uses artificial neural networks with multiple layers to model complex patterns in data.",
+            "relevant_passage": "Deep learning is part of a broader family of machine learning methods based on artificial neural networks with representation learning. Learning can be supervised, semi-supervised or unsupervised. Deep learning architectures such as deep neural networks, recurrent neural networks, and convolutional neural networks have been applied to fields including computer vision and natural language processing."
+        },
+        {
+            "id": "q4",
+            "question": "What are the main causes of climate change?",
+            "expected_doc_id": "eval_doc_2",
+            "expected_answer": "The main causes of climate change are greenhouse gas emissions from burning fossil fuels, deforestation, and industrial processes.",
+            "relevant_passage": "The primary drivers of climate change are greenhouse gas emissions, particularly carbon dioxide from burning fossil fuels like coal, oil, and natural gas. Deforestation contributes by reducing the planet's capacity to absorb CO2. Industrial processes and agriculture also release significant amounts of methane and nitrous oxide."
+        },
+        {
+            "id": "q5",
+            "question": "What is the Paris Agreement?",
+            "expected_doc_id": "eval_doc_2",
+            "expected_answer": "The Paris Agreement is an international treaty adopted in 2015 that aims to limit global warming to well below 2 degrees Celsius above pre-industrial levels.",
+            "relevant_passage": "The Paris Agreement, adopted in December 2015, is a landmark international accord within the United Nations Framework Convention on Climate Change. Its central aim is to strengthen the global response to climate change by keeping the global temperature rise this century well below 2 degrees Celsius above pre-industrial levels, while pursuing efforts to limit the increase to 1.5 degrees Celsius."
+        },
+        {
+            "id": "q6",
+            "question": "How do renewable energy sources help fight climate change?",
+            "expected_doc_id": "eval_doc_2",
+            "expected_answer": "Renewable energy sources like solar, wind, and hydroelectric power produce electricity without direct greenhouse gas emissions, reducing dependence on fossil fuels.",
+            "relevant_passage": "Renewable energy sources including solar photovoltaic, wind turbines, and hydroelectric power generate electricity without directly emitting greenhouse gases during operation. Transitioning from fossil fuels to renewables is one of the most effective strategies for reducing carbon emissions and mitigating climate change."
+        },
+        {
+            "id": "q7",
+            "question": "What are the effects of sea level rise?",
+            "expected_doc_id": "eval_doc_2",
+            "expected_answer": "Sea level rise leads to coastal flooding, erosion, loss of habitat, saltwater intrusion into freshwater aquifers, and displacement of coastal communities.",
+            "relevant_passage": "Rising sea levels pose severe threats to coastal regions worldwide. Effects include increased coastal flooding, accelerated erosion, loss of coastal wetlands and habitats, saltwater contamination of freshwater resources, and the potential displacement of millions of people living in low-lying areas."
+        },
+        {
+            "id": "q8",
+            "question": "What is a Python decorator?",
+            "expected_doc_id": "eval_doc_3",
+            "expected_answer": "A Python decorator is a design pattern that allows you to modify the behavior of a function or class by wrapping it in another function, using the @decorator syntax.",
+            "relevant_passage": "Decorators in Python are a powerful design pattern that allows a user to add new functionality to an existing object without modifying its structure. Decorators are usually called before the definition of a function you want to decorate, using the @decorator_name syntax. They wrap the original function and can execute code before and after the wrapped function runs."
+        },
+        {
+            "id": "q9",
+            "question": "What is the difference between a list and a tuple in Python?",
+            "expected_doc_id": "eval_doc_3",
+            "expected_answer": "Lists are mutable (can be modified after creation) and use square brackets, while tuples are immutable (cannot be changed) and use parentheses.",
+            "relevant_passage": "Lists and tuples are both sequence data types in Python. The key difference is mutability: lists are mutable, meaning their elements can be changed, added, or removed after creation using square brackets []. Tuples are immutable, created with parentheses (), and once defined their elements cannot be modified. Tuples are generally faster and use less memory."
+        },
+        {
+            "id": "q10",
+            "question": "What are list comprehensions in Python?",
+            "expected_doc_id": "eval_doc_3",
+            "expected_answer": "List comprehensions provide a concise way to create lists by applying an expression to each item in an iterable, optionally filtering items with a condition.",
+            "relevant_passage": "List comprehensions provide a concise way to create lists in Python. They consist of brackets containing an expression followed by a for clause, then zero or more for or if clauses. The result is a new list resulting from evaluating the expression in the context of the clauses that follow. For example: squares = [x**2 for x in range(10)]."
+        },
+        {
+            "id": "q11",
+            "question": "What is transfer learning in AI?",
+            "expected_doc_id": "eval_doc_1",
+            "expected_answer": "Transfer learning is a technique where a model trained on one task is repurposed as the starting point for a model on a different but related task.",
+            "relevant_passage": "Transfer learning is a machine learning technique where a model developed for one task is reused as the starting point for a model on a second task. It is particularly popular in deep learning where pre-trained models are used as feature extractors or fine-tuned on new datasets, significantly reducing training time and data requirements."
+        },
+        {
+            "id": "q12",
+            "question": "How does exception handling work in Python?",
+            "expected_doc_id": "eval_doc_3",
+            "expected_answer": "Python uses try/except blocks to catch and handle exceptions. Code that might raise an exception goes in the try block, and handling code goes in except blocks.",
+            "relevant_passage": "Exception handling in Python uses try/except blocks. The code that might cause an exception is placed in the try block. If an exception occurs, the program jumps to the corresponding except block. You can also use else (executed if no exception occurs) and finally (always executed) clauses. Multiple except blocks can handle different exception types."
+        },
+        {
+            "id": "q13",
+            "question": "What is the greenhouse effect?",
+            "expected_doc_id": "eval_doc_2",
+            "expected_answer": "The greenhouse effect is a natural process where certain gases in Earth's atmosphere trap heat from the sun, warming the surface. Human activities have intensified this effect.",
+            "relevant_passage": "The greenhouse effect is a natural phenomenon where greenhouse gases in Earth's atmosphere (including water vapor, carbon dioxide, and methane) trap some of the sun's heat near the surface, making the planet habitable. However, human activities have significantly increased the concentration of these gases, intensifying the greenhouse effect and causing global warming."
+        },
+        {
+            "id": "q14",
+            "question": "What is natural language processing?",
+            "expected_doc_id": "eval_doc_1",
+            "expected_answer": "Natural language processing (NLP) is a branch of AI concerned with programming computers to process and analyze large amounts of natural language data.",
+            "relevant_passage": "Natural Language Processing (NLP) is a subfield of artificial intelligence that focuses on the interaction between computers and humans through natural language. The ultimate objective of NLP is to enable computers to understand, interpret, and generate human language in a valuable way. Applications include machine translation, sentiment analysis, chatbots, and text summarization."
+        },
+        {
+            "id": "q15",
+            "question": "What is Python's GIL?",
+            "expected_doc_id": "eval_doc_3",
+            "expected_answer": "The Global Interpreter Lock (GIL) is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecode simultaneously in CPython.",
+            "relevant_passage": "The Global Interpreter Lock (GIL) is a mechanism used in CPython to synchronize access to Python objects, preventing multiple native threads from executing Python bytecodes at once. While it simplifies memory management, it can be a bottleneck for CPU-bound multi-threaded programs. Common workarounds include using multiprocessing or alternative Python implementations like Jython."
+        }
+    ]
+}

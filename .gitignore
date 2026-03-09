@@ -1,0 +1,26 @@
+# Model weights (4-8 GB)
+models/*.gguf
+models/*.bin
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# MinIO data
+minio_data/
+
+# ChromaDB data
+chroma_data/
+
+# SQLite
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
