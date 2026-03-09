@@ -27,8 +27,9 @@ def build_messages(question: str, sources: List[Dict]) -> List[Dict]:
         )
     else:
         context_parts = []
-        # Truncate each chunk to ~250 words to fit within 2048 token context
-        max_words_per_chunk = 250
+        # Dynamically limit words per chunk based on source count
+        # Budget: ~800 words for context (~1100 tokens), ~150 tokens system msg, ~256 tokens response
+        max_words_per_chunk = max(60, 800 // len(sources))
         for i, source in enumerate(sources, 1):
             text = source['text']
             words = text.split()
