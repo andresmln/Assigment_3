@@ -29,7 +29,7 @@ class Config:
     TOP_K = int(os.getenv("TOP_K", "5"))
 
     # Embedding model
-    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-en-v1.5")
 
     @classmethod
     def llm_url(cls):

@@ -79,24 +79,60 @@ def compute_metrics(results, k_values=[1, 3, 5]):
     return metrics
 
 
+def build_doc_id_map(dataset):
+    """
+    Query the API for uploaded documents and map each eval filename
+    to its real UUID doc_id assigned by the system.
+    Returns a dict: expected_doc_id (e.g. 'eval_doc_1') -> real UUID.
+    """
+    filename_to_eval_id = {
+        d["filename"]: d["doc_id"] for d in dataset.get("documents", [])
+    }
+    try:
+        resp = requests.get(f"{API_URL}/documents", timeout=10)
+        if resp.status_code != 200:
+            print("[WARN] Could not fetch document list — doc_id matching may be incorrect")
+            return {}
+        uploaded = resp.json().get("documents", [])
+    except Exception as e:
+        print(f"[WARN] Could not reach API for doc mapping: {e}")
+        return {}
+
+    eval_id_to_uuid = {}
+    for doc in uploaded:
+        eval_id = filename_to_eval_id.get(doc["filename"])
+        if eval_id:
+            eval_id_to_uuid[eval_id] = doc["id"]
+
+    print("Document ID mapping (eval_id -> system UUID):")
+    for eid, uid in eval_id_to_uuid.items():
+        print(f"  {eid} -> {uid}")
+    if not eval_id_to_uuid:
+        print("  [WARN] No eval documents found. Upload them first.")
+    print()
+    return eval_id_to_uuid
+
+
 def run_evaluation():
     """Run the full evaluation pipeline."""
     dataset = load_eval_dataset()
     questions = dataset["questions"]
-    max_k = 5
+    k_values = [1, 3, 5]
 
-    print(f"=== RAG Retrieval Evaluation ===")
+    print("=== RAG Retrieval Evaluation ===")
     print(f"Total questions: {len(questions)}")
-    print(f"k values: [1, 3, 5]")
+    print(f"k values: {k_values}")
     print()
 
-    results = []
-    successes = []
-    failures = []
+    # Resolve symbolic eval doc_ids to real UUIDs assigned by the API
+    doc_id_map = build_doc_id_map(dataset)
 
+    # ── Step 1: Query each question once with top_k=5 ────────────────────────
+    print("── Querying system (top_k=5) ──")
+    results = []
     for i, q in enumerate(questions, 1):
-        print(f"[{i}/{len(questions)}] Querying: {q['question'][:60]}...")
-        response = query_system(q["question"], top_k=max_k)
+        print(f"[{i}/{len(questions)}] {q['question'][:65]}...")
+        response = query_system(q["question"], top_k=5)
 
         if response is None:
             print("  → Skipped (API error)")
@@ -105,41 +141,54 @@ def run_evaluation():
         sources = response.get("sources", [])
         retrieved_doc_ids = [s["doc_id"] for s in sources]
 
-        result = {
+        expected_eval_id = q["expected_doc_id"]
+        expected_real_id = doc_id_map.get(expected_eval_id, expected_eval_id)
+
+        results.append({
             "question_id": q["id"],
             "question": q["question"],
-            "expected_doc_id": q["expected_doc_id"],
+            "expected_doc_id": expected_real_id,
             "retrieved_doc_ids": retrieved_doc_ids,
             "answer": response.get("answer", ""),
             "num_sources": len(sources),
-        }
-        results.append(result)
-
-        # Classify as success or failure
-        if q["expected_doc_id"] in retrieved_doc_ids[:3]:
-            successes.append(result)
-            print(f"  ✅ Relevant doc found in top-3")
-        else:
-            failures.append(result)
-            print(f"  ❌ Relevant doc NOT in top-3")
-
+        })
     print()
 
-    # Compute metrics
-    metrics = compute_metrics(results)
+    # ── Step 2: Show pass/fail for each k ────────────────────────────────────
+    for k in k_values:
+        print(f"── Results at k={k} ──")
+        successes_k = []
+        failures_k = []
+        for r in results:
+            hit = r["expected_doc_id"] in r["retrieved_doc_ids"][:k]
+            icon = "✅" if hit else "❌"
+            print(f"  {icon} [{r['question_id']}] {r['question'][:60]}")
+            if hit:
+                successes_k.append(r)
+            else:
+                failures_k.append(r)
+        print(f"  → Hits: {len(successes_k)}/{len(results)}")
+        print()
+
+    # ── Step 3: Compute and print all metrics ─────────────────────────────────
+    metrics = compute_metrics(results, k_values)
 
     print("=== Retrieval Metrics ===")
-    for metric, value in sorted(metrics.items()):
-        print(f"  {metric}: {value}")
+    for k in k_values:
+        print(f"  k={k}:  Hit Rate={metrics[f'hit_rate@{k}']}  "
+              f"MRR={metrics[f'mrr@{k}']}  "
+              f"Precision={metrics[f'precision@{k}']}")
     print()
 
-    # Qualitative analysis
-    print("=== Qualitative Analysis ===")
+    # ── Step 4: Qualitative analysis (based on k=3) ───────────────────────────
+    successes = [r for r in results if r["expected_doc_id"] in r["retrieved_doc_ids"][:3]]
+    failures  = [r for r in results if r["expected_doc_id"] not in r["retrieved_doc_ids"][:3]]
+
+    print("=== Qualitative Analysis (k=3) ===")
     print("\n--- Success Cases ---")
     for s in successes[:3]:
         print(f"  Q: {s['question']}")
-        print(f"  Expected: {s['expected_doc_id']}")
-        print(f"  Retrieved: {s['retrieved_doc_ids'][:3]}")
+        print(f"  Retrieved top-3: {s['retrieved_doc_ids'][:3]}")
         print(f"  Answer preview: {s['answer'][:150]}...")
         print()
 
@@ -147,20 +196,20 @@ def run_evaluation():
     for f in failures[:2]:
         print(f"  Q: {f['question']}")
         print(f"  Expected: {f['expected_doc_id']}")
-        print(f"  Retrieved: {f['retrieved_doc_ids'][:3]}")
-        print(f"  Explanation: The retrieval system failed to rank the relevant document")
-        print(f"    in the top results. This may be due to vocabulary mismatch between")
-        print(f"    the query and the stored chunks, or insufficient semantic overlap.")
+        print(f"  Retrieved top-3: {f['retrieved_doc_ids'][:3]}")
+        print("  Explanation: The retrieval system failed to rank the relevant document")
+        print("    in the top results. This may be due to vocabulary mismatch between")
+        print("    the query and the stored chunks, or insufficient semantic overlap.")
         print()
 
-    # Save results
+    # ── Step 5: Save results ──────────────────────────────────────────────────
     os.makedirs(RESULTS_DIR, exist_ok=True)
     output = {
         "metrics": metrics,
         "total_questions": len(questions),
         "questions_evaluated": len(results),
-        "success_count": len(successes),
-        "failure_count": len(failures),
+        "success_count_k3": len(successes),
+        "failure_count_k3": len(failures),
         "detailed_results": results,
         "qualitative_analysis": {
             "successes": successes[:3],

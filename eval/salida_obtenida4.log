@@ -1,0 +1,117 @@
+nohup: ignoring input
+=== RAG Retrieval Evaluation ===
+Total questions: 15
+k values: [1, 3, 5]
+
+Document ID mapping (eval_id -> system UUID):
+  eval_doc_3 -> 419bc71c-726b-42ef-9304-8dc412802b0b
+  eval_doc_2 -> 7782a17c-3ede-426a-9cc3-9858e2b83def
+  eval_doc_1 -> ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+
+── Querying system (top_k=5) ──
+[1/15] What is the Turing Test?...
+[2/15] What are neural networks?...
+[3/15] What is deep learning?...
+[4/15] What are the main causes of climate change?...
+[5/15] What is the Paris Agreement?...
+[6/15] How do renewable energy sources help fight climate change?...
+[7/15] What are the effects of sea level rise?...
+[8/15] What is a Python decorator?...
+[9/15] What is the difference between a list and a tuple in Python?...
+[10/15] What are list comprehensions in Python?...
+[11/15] What is transfer learning in AI?...
+[12/15] How does exception handling work in Python?...
+[13/15] What is the greenhouse effect?...
+[14/15] What is natural language processing?...
+[15/15] What is Python's GIL?...
+
+── Results at k=1 ──
+  ✅ [q1] What is the Turing Test?
+  ✅ [q2] What are neural networks?
+  ❌ [q3] What is deep learning?
+  ✅ [q4] What are the main causes of climate change?
+  ✅ [q5] What is the Paris Agreement?
+  ✅ [q6] How do renewable energy sources help fight climate change?
+  ✅ [q7] What are the effects of sea level rise?
+  ✅ [q8] What is a Python decorator?
+  ✅ [q9] What is the difference between a list and a tuple in Python?
+  ✅ [q10] What are list comprehensions in Python?
+  ❌ [q11] What is transfer learning in AI?
+  ✅ [q12] How does exception handling work in Python?
+  ✅ [q13] What is the greenhouse effect?
+  ❌ [q14] What is natural language processing?
+  ✅ [q15] What is Python's GIL?
+  → Hits: 12/15
+
+── Results at k=3 ──
+  ✅ [q1] What is the Turing Test?
+  ✅ [q2] What are neural networks?
+  ✅ [q3] What is deep learning?
+  ✅ [q4] What are the main causes of climate change?
+  ✅ [q5] What is the Paris Agreement?
+  ✅ [q6] How do renewable energy sources help fight climate change?
+  ✅ [q7] What are the effects of sea level rise?
+  ✅ [q8] What is a Python decorator?
+  ✅ [q9] What is the difference between a list and a tuple in Python?
+  ✅ [q10] What are list comprehensions in Python?
+  ❌ [q11] What is transfer learning in AI?
+  ✅ [q12] How does exception handling work in Python?
+  ✅ [q13] What is the greenhouse effect?
+  ❌ [q14] What is natural language processing?
+  ✅ [q15] What is Python's GIL?
+  → Hits: 13/15
+
+── Results at k=5 ──
+  ✅ [q1] What is the Turing Test?
+  ✅ [q2] What are neural networks?
+  ✅ [q3] What is deep learning?
+  ✅ [q4] What are the main causes of climate change?
+  ✅ [q5] What is the Paris Agreement?
+  ✅ [q6] How do renewable energy sources help fight climate change?
+  ✅ [q7] What are the effects of sea level rise?
+  ✅ [q8] What is a Python decorator?
+  ✅ [q9] What is the difference between a list and a tuple in Python?
+  ✅ [q10] What are list comprehensions in Python?
+  ✅ [q11] What is transfer learning in AI?
+  ✅ [q12] How does exception handling work in Python?
+  ✅ [q13] What is the greenhouse effect?
+  ✅ [q14] What is natural language processing?
+  ✅ [q15] What is Python's GIL?
+  → Hits: 15/15
+
+=== Retrieval Metrics ===
+  k=1:  Hit Rate=0.8  MRR=0.8  Precision=0.8
+  k=3:  Hit Rate=0.8667  MRR=0.8333  Precision=0.5111
+  k=5:  Hit Rate=1.0  MRR=0.8667  Precision=0.3467
+
+=== Qualitative Analysis (k=3) ===
+
+--- Success Cases ---
+  Q: What is the Turing Test?
+  Retrieved top-3: ['ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '419bc71c-726b-42ef-9304-8dc412802b0b', 'a92c02ac-fb14-4739-b2ed-0846c8ac8aec']
+  Answer preview: The Turing Test, proposed by Alan Turing in 1950, is a criterion for machine intelligence. It involves a human evaluator judging natural language conv...
+
+  Q: What are neural networks?
+  Retrieved top-3: ['ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '99883c6f-9fc6-4a68-9479-8a841293f84d', '6968eb78-3a05-4fcb-bc0b-20bb871f49da']
+  Answer preview: Neural networks are a subset of machine learning, which is a branch of artificial intelligence. They are modeled after the structure and function of t...
+
+  Q: What is deep learning?
+  Retrieved top-3: ['6968eb78-3a05-4fcb-bc0b-20bb871f49da', 'ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '439479cc-0003-4469-be6b-75a16876cc74']
+  Answer preview: Deep learning is a subset of artificial intelligence that focuses on the development of computer programs capable of learning and improving from exper...
+
+--- Failure Cases ---
+  Q: What is transfer learning in AI?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved top-3: ['1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f', '99883c6f-9fc6-4a68-9479-8a841293f84d', '99883c6f-9fc6-4a68-9479-8a841293f84d']
+  Explanation: The retrieval system failed to rank the relevant document
+    in the top results. This may be due to vocabulary mismatch between
+    the query and the stored chunks, or insufficient semantic overlap.
+
+  Q: What is natural language processing?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved top-3: ['99883c6f-9fc6-4a68-9479-8a841293f84d', 'f9596d96-ad8c-4d77-9d69-c59aa4d064ed', 'a92c02ac-fb14-4739-b2ed-0846c8ac8aec']
+  Explanation: The retrieval system failed to rank the relevant document
+    in the top results. This may be due to vocabulary mismatch between
+    the query and the stored chunks, or insufficient semantic overlap.
+
+Results saved to /home/alumno/Desktop/datos/NLP/Assigment 3/eval/../results/eval_results.json

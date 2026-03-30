@@ -93,6 +93,8 @@ def delete_chunks_by_doc_id(doc_id: str):
 def retrieve(query: str, top_k: int = None) -> List[Dict]:
     """
     Retrieve the most relevant chunks for a query.
+    Over-fetches from ChromaDB and deduplicates by text content
+    to avoid returning identical chunks from duplicate uploads.
     Returns a list of dicts with: text, doc_id, filename, chunk_index, score.
     """
     if top_k is None:
@@ -106,27 +108,44 @@ def retrieve(query: str, top_k: int = None) -> List[Dict]:
     if collection.count() == 0:
         return []
 
+    # Over-fetch 3x to have room for deduplication
+    fetch_k = min(top_k * 3, collection.count())
+
     query_embedding = model.encode([query], show_progress_bar=False).tolist()
 
     results = collection.query(
         query_embeddings=query_embedding,
-        n_results=min(top_k, collection.count()),
+        n_results=fetch_k,
         include=["documents", "metadatas", "distances"],
     )
 
-    retrieved = []
-    if results and results["ids"] and results["ids"][0]:
-        for i, doc_id in enumerate(results["ids"][0]):
-            # ChromaDB returns distances; for cosine, distance = 1 - similarity
-            distance = results["distances"][0][i]
-            similarity = 1.0 - distance
+    if not results or not results["ids"] or not results["ids"][0]:
+        return []
 
-            retrieved.append({
-                "text": results["documents"][0][i],
-                "doc_id": results["metadatas"][0][i]["doc_id"],
-                "filename": results["metadatas"][0][i]["filename"],
-                "chunk_index": results["metadatas"][0][i]["chunk_index"],
-                "score": round(similarity, 4),
-            })
+    # Deduplicate by text content — keep the highest-scoring version
+    seen_texts = set()
+    retrieved = []
+
+    for i in range(len(results["ids"][0])):
+        text = results["documents"][0][i]
+        distance = results["distances"][0][i]
+        similarity = 1.0 - distance
+
+        # Normalize text for dedup comparison (first 200 chars)
+        text_key = text[:200].strip().lower()
+        if text_key in seen_texts:
+            continue
+        seen_texts.add(text_key)
+
+        retrieved.append({
+            "text": text,
+            "doc_id": results["metadatas"][0][i]["doc_id"],
+            "filename": results["metadatas"][0][i]["filename"],
+            "chunk_index": results["metadatas"][0][i]["chunk_index"],
+            "score": round(similarity, 4),
+        })
+
+        if len(retrieved) >= top_k:
+            break
 
     return retrieved

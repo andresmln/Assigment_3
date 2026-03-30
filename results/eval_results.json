@@ -1,0 +1,305 @@
+{
+  "metrics": {
+    "hit_rate@1": 0.8,
+    "mrr@1": 0.8,
+    "precision@1": 0.8,
+    "hit_rate@3": 0.8667,
+    "mrr@3": 0.8333,
+    "precision@3": 0.5111,
+    "hit_rate@5": 1.0,
+    "mrr@5": 0.8667,
+    "precision@5": 0.3467
+  },
+  "total_questions": 15,
+  "questions_evaluated": 15,
+  "success_count_k3": 13,
+  "failure_count_k3": 2,
+  "detailed_results": [
+    {
+      "question_id": "q1",
+      "question": "What is the Turing Test?",
+      "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+      "retrieved_doc_ids": [
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+      ],
+      "answer": "The Turing Test, proposed by Alan Turing in 1950, is a criterion for machine intelligence. It involves a human evaluator judging natural language conversations between a human and a machine. If the evaluator cannot reliably distinguish the machine from the human, the machine is said to have passed the test.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q2",
+      "question": "What are neural networks?",
+      "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+      "retrieved_doc_ids": [
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "439479cc-0003-4469-be6b-75a16876cc74"
+      ],
+      "answer": "Neural networks are a subset of machine learning, which is a branch of artificial intelligence. They are modeled after the structure and function of the human brain, specifically the way neurons communicate with each other. Neural networks are used to develop computer programs that can learn and improve from experience without being explicitly programmed. They are composed of layers of interconnected nodes (or neurons) that process information. Each node receives input data, applies a function to it, and passes the result to the next layer. This process allows neural networks to recognize patterns and make predictions or decisions based on the data they are trained on.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q3",
+      "question": "What is deep learning?",
+      "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+      "retrieved_doc_ids": [
+        "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "439479cc-0003-4469-be6b-75a16876cc74",
+        "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d"
+      ],
+      "answer": "Deep learning is a subset of artificial intelligence that focuses on the development of computer programs capable of learning and improving from experience without being explicitly programmed. It is a type of machine learning that uses neural networks with multiple layers to learn from large amounts of data. These neural networks can automatically learn features from raw data, such as images, text, or sound, which is a significant advantage over traditional machine learning algorithms that require manual feature extraction.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q4",
+      "question": "What are the main causes of climate change?",
+      "expected_doc_id": "7782a17c-3ede-426a-9cc3-9858e2b83def",
+      "retrieved_doc_ids": [
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+      ],
+      "answer": "The main causes of climate change, as described in the context, are greenhouse gas emissions, particularly carbon dioxide from burning fossil fuels like coal, oil, and natural gas. Deforestation also contributes by reducing the planet's capacity to absorb CO2. Industrial processes and agriculture release significant amounts of methane and nitrous oxide. [Source 1]",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q5",
+      "question": "What is the Paris Agreement?",
+      "expected_doc_id": "7782a17c-3ede-426a-9cc3-9858e2b83def",
+      "retrieved_doc_ids": [
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f",
+        "f9596d96-ad8c-4d77-9d69-c59aa4d064ed"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain information about the Paris Agreement. The provided documents mainly discuss climate change, its causes, effects, and mitigation strategies. There is no specific mention of the Paris Agreement in the given context.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q6",
+      "question": "How do renewable energy sources help fight climate change?",
+      "expected_doc_id": "7782a17c-3ede-426a-9cc3-9858e2b83def",
+      "retrieved_doc_ids": [
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "f9596d96-ad8c-4d77-9d69-c59aa4d064ed"
+      ],
+      "answer": "Renewable energy sources help fight climate change by reducing greenhouse gas emissions. Specifically, they do not release significant amounts of methane and nitrous oxide, which are potent greenhouse gases. Instead, renewable energy sources like solar, wind, and hydropower produce electricity without emitting carbon dioxide, which is a major contributor to global warming. This reduction in CO2 emissions helps mitigate the intensification of the greenhouse effect and the resultant global warming.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q7",
+      "question": "What are the effects of sea level rise?",
+      "expected_doc_id": "7782a17c-3ede-426a-9cc3-9858e2b83def",
+      "retrieved_doc_ids": [
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain information about sea level rise or its effects. The provided context discusses climate change, its causes, effects, and mitigation strategies, but does not mention sea level rise or its impacts.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q8",
+      "question": "What is a Python decorator?",
+      "expected_doc_id": "419bc71c-726b-42ef-9304-8dc412802b0b",
+      "retrieved_doc_ids": [
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain any information about Python decorators.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q9",
+      "question": "What is the difference between a list and a tuple in Python?",
+      "expected_doc_id": "419bc71c-726b-42ef-9304-8dc412802b0b",
+      "retrieved_doc_ids": [
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "f9596d96-ad8c-4d77-9d69-c59aa4d064ed",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d"
+      ],
+      "answer": "Based on the provided context, the difference between a list and a tuple in Python is:\n\n- Lists are mutable, meaning their elements can be changed, added, or removed after creation using square brackets [].\n- Tuples are immutable, created with parentheses (), and once defined their elements cannot be modified.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q10",
+      "question": "What are list comprehensions in Python?",
+      "expected_doc_id": "419bc71c-726b-42ef-9304-8dc412802b0b",
+      "retrieved_doc_ids": [
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d"
+      ],
+      "answer": "List comprehensions in Python are a concise way to create lists based on existing lists or other iterables. They use an expression followed by a `for` clause, and optionally, `if` clauses. The expression is evaluated once for each element in the iterable, and the result is a new list. For example, to create a list of squares of numbers from 0 to 9, you would use:\n\n```python\nsquares = [x**2 for x in range(10)]\n```\n\nThis line of code is equivalent to:\n\n```python\nsquares = []\nfor x in range(10):\n    squares.append(x**2)\n```\n\nList comprehensions are more readable and often more efficient than using a `for` loop to create lists. They can also be nested and combined with other expressions and conditions.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q11",
+      "question": "What is transfer learning in AI?",
+      "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+      "retrieved_doc_ids": [
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain specific information about transfer learning in AI. The provided documents are related to natural language processing and a CCTV dataset, but do not discuss transfer learning.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q12",
+      "question": "How does exception handling work in Python?",
+      "expected_doc_id": "419bc71c-726b-42ef-9304-8dc412802b0b",
+      "retrieved_doc_ids": [
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain any information about exception handling in Python. It provides information about Python programming, data types, object-oriented programming, and other aspects but does not discuss exception handling.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q13",
+      "question": "What is the greenhouse effect?",
+      "expected_doc_id": "7782a17c-3ede-426a-9cc3-9858e2b83def",
+      "retrieved_doc_ids": [
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "7782a17c-3ede-426a-9cc3-9858e2b83def",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+        "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+      ],
+      "answer": "The greenhouse effect is a natural phenomenon where greenhouse gases in Earth's atmosphere (including water vapor, carbon dioxide, and methane) trap some of the sun's heat near the surface, making the planet habitable.",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q14",
+      "question": "What is natural language processing?",
+      "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+      "retrieved_doc_ids": [
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "f9596d96-ad8c-4d77-9d69-c59aa4d064ed",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec"
+      ],
+      "answer": "Natural Language Processing (NLP) is a subset of artificial intelligence that focuses on the development of computer programs capable of understanding and interpreting human language. It aims to enable machines to process, analyze, and generate natural language text, including tasks such as learning, reasoning, problem-solving, perception, and natural language understanding. [Source 4]",
+      "num_sources": 5
+    },
+    {
+      "question_id": "q15",
+      "question": "What is Python's GIL?",
+      "expected_doc_id": "419bc71c-726b-42ef-9304-8dc412802b0b",
+      "retrieved_doc_ids": [
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "419bc71c-726b-42ef-9304-8dc412802b0b",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+        "99883c6f-9fc6-4a68-9479-8a841293f84d",
+        "a92c02ac-fb14-4739-b2ed-0846c8ac8aec"
+      ],
+      "answer": "I cannot fully answer this based on the provided documents. The context does not contain any information about Python's GIL (Global Interpreter Lock).",
+      "num_sources": 5
+    }
+  ],
+  "qualitative_analysis": {
+    "successes": [
+      {
+        "question_id": "q1",
+        "question": "What is the Turing Test?",
+        "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "retrieved_doc_ids": [
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "419bc71c-726b-42ef-9304-8dc412802b0b",
+          "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+        ],
+        "answer": "The Turing Test, proposed by Alan Turing in 1950, is a criterion for machine intelligence. It involves a human evaluator judging natural language conversations between a human and a machine. If the evaluator cannot reliably distinguish the machine from the human, the machine is said to have passed the test.",
+        "num_sources": 5
+      },
+      {
+        "question_id": "q2",
+        "question": "What are neural networks?",
+        "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "retrieved_doc_ids": [
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "99883c6f-9fc6-4a68-9479-8a841293f84d",
+          "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+          "99883c6f-9fc6-4a68-9479-8a841293f84d",
+          "439479cc-0003-4469-be6b-75a16876cc74"
+        ],
+        "answer": "Neural networks are a subset of machine learning, which is a branch of artificial intelligence. They are modeled after the structure and function of the human brain, specifically the way neurons communicate with each other. Neural networks are used to develop computer programs that can learn and improve from experience without being explicitly programmed. They are composed of layers of interconnected nodes (or neurons) that process information. Each node receives input data, applies a function to it, and passes the result to the next layer. This process allows neural networks to recognize patterns and make predictions or decisions based on the data they are trained on.",
+        "num_sources": 5
+      },
+      {
+        "question_id": "q3",
+        "question": "What is deep learning?",
+        "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "retrieved_doc_ids": [
+          "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "439479cc-0003-4469-be6b-75a16876cc74",
+          "6968eb78-3a05-4fcb-bc0b-20bb871f49da",
+          "99883c6f-9fc6-4a68-9479-8a841293f84d"
+        ],
+        "answer": "Deep learning is a subset of artificial intelligence that focuses on the development of computer programs capable of learning and improving from experience without being explicitly programmed. It is a type of machine learning that uses neural networks with multiple layers to learn from large amounts of data. These neural networks can automatically learn features from raw data, such as images, text, or sound, which is a significant advantage over traditional machine learning algorithms that require manual feature extraction.",
+        "num_sources": 5
+      }
+    ],
+    "failures": [
+      {
+        "question_id": "q11",
+        "question": "What is transfer learning in AI?",
+        "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "retrieved_doc_ids": [
+          "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f",
+          "99883c6f-9fc6-4a68-9479-8a841293f84d",
+          "99883c6f-9fc6-4a68-9479-8a841293f84d",
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f"
+        ],
+        "answer": "I cannot fully answer this based on the provided documents. The context does not contain specific information about transfer learning in AI. The provided documents are related to natural language processing and a CCTV dataset, but do not discuss transfer learning.",
+        "num_sources": 5
+      },
+      {
+        "question_id": "q14",
+        "question": "What is natural language processing?",
+        "expected_doc_id": "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+        "retrieved_doc_ids": [
+          "99883c6f-9fc6-4a68-9479-8a841293f84d",
+          "f9596d96-ad8c-4d77-9d69-c59aa4d064ed",
+          "a92c02ac-fb14-4739-b2ed-0846c8ac8aec",
+          "ebf5eed2-e51d-4c9b-a952-04b03f0c7c66",
+          "a92c02ac-fb14-4739-b2ed-0846c8ac8aec"
+        ],
+        "answer": "Natural Language Processing (NLP) is a subset of artificial intelligence that focuses on the development of computer programs capable of understanding and interpreting human language. It aims to enable machines to process, analyze, and generate natural language text, including tasks such as learning, reasoning, problem-solving, perception, and natural language understanding. [Source 4]",
+        "num_sources": 5
+      }
+    ]
+  }
+}

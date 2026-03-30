@@ -60,7 +60,7 @@ def generate_answer(question: str, sources: List[Dict]) -> Dict:
         response = requests.post(
             f"{Config.llm_url()}/v1/chat/completions",
             json={
-                "model": "tinyllama",
+                "model": "Qwen2.5-3B",
                 "messages": messages,
                 "max_tokens": 256,
                 "temperature": 0.3,

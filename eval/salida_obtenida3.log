@@ -1,0 +1,86 @@
+nohup: ignoring input
+=== RAG Retrieval Evaluation ===
+Total questions: 15
+k values: [1, 3, 5]
+
+Document ID mapping (eval_id -> system UUID):
+  eval_doc_3 -> 419bc71c-726b-42ef-9304-8dc412802b0b
+  eval_doc_2 -> 7782a17c-3ede-426a-9cc3-9858e2b83def
+  eval_doc_1 -> ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+
+[1/15] Querying: What is the Turing Test?...
+  ✅ Relevant doc found in top-3
+[2/15] Querying: What are neural networks?...
+  ✅ Relevant doc found in top-3
+[3/15] Querying: What is deep learning?...
+  ✅ Relevant doc found in top-3
+[4/15] Querying: What are the main causes of climate change?...
+  ✅ Relevant doc found in top-3
+[5/15] Querying: What is the Paris Agreement?...
+  ✅ Relevant doc found in top-3
+[6/15] Querying: How do renewable energy sources help fight climate change?...
+  ✅ Relevant doc found in top-3
+[7/15] Querying: What are the effects of sea level rise?...
+  ✅ Relevant doc found in top-3
+[8/15] Querying: What is a Python decorator?...
+  ✅ Relevant doc found in top-3
+[9/15] Querying: What is the difference between a list and a tuple in Python?...
+  ✅ Relevant doc found in top-3
+[10/15] Querying: What are list comprehensions in Python?...
+  ✅ Relevant doc found in top-3
+[11/15] Querying: What is transfer learning in AI?...
+  ❌ Relevant doc NOT in top-3
+[12/15] Querying: How does exception handling work in Python?...
+  ✅ Relevant doc found in top-3
+[13/15] Querying: What is the greenhouse effect?...
+  ✅ Relevant doc found in top-3
+[14/15] Querying: What is natural language processing?...
+  ❌ Relevant doc NOT in top-3
+[15/15] Querying: What is Python's GIL?...
+  ✅ Relevant doc found in top-3
+
+=== Retrieval Metrics ===
+  hit_rate@1: 0.8667
+  hit_rate@3: 0.8667
+  hit_rate@5: 1.0
+  mrr@1: 0.8667
+  mrr@3: 0.8667
+  mrr@5: 0.9
+  precision@1: 0.8667
+  precision@3: 0.5333
+  precision@5: 0.36
+
+=== Qualitative Analysis ===
+
+--- Success Cases ---
+  Q: What is the Turing Test?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved: ['ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '419bc71c-726b-42ef-9304-8dc412802b0b', 'a92c02ac-fb14-4739-b2ed-0846c8ac8aec']
+  Answer preview: The Turing Test, proposed by Alan Turing in 1950, is a criterion for machine intelligence. In this test, a human evaluator judges natural language con...
+
+  Q: What are neural networks?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved: ['ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '99883c6f-9fc6-4a68-9479-8a841293f84d', '99883c6f-9fc6-4a68-9479-8a841293f84d']
+  Answer preview: Neural networks are a subset of artificial intelligence (AI) that enable systems to automatically learn and improve from experience without explicit p...
+
+  Q: What is deep learning?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved: ['ebf5eed2-e51d-4c9b-a952-04b03f0c7c66', '99883c6f-9fc6-4a68-9479-8a841293f84d', 'ebf5eed2-e51d-4c9b-a952-04b03f0c7c66']
+  Answer preview: I cannot fully answer this based on the provided documents. The context does not specifically define deep learning. [Source 1] discusses deep learning...
+
+--- Failure Cases ---
+  Q: What is transfer learning in AI?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved: ['1f41f9eb-19b7-44fc-9b70-4aa7bc45c66f', '99883c6f-9fc6-4a68-9479-8a841293f84d', '99883c6f-9fc6-4a68-9479-8a841293f84d']
+  Explanation: The retrieval system failed to rank the relevant document
+    in the top results. This may be due to vocabulary mismatch between
+    the query and the stored chunks, or insufficient semantic overlap.
+
+  Q: What is natural language processing?
+  Expected: ebf5eed2-e51d-4c9b-a952-04b03f0c7c66
+  Retrieved: ['99883c6f-9fc6-4a68-9479-8a841293f84d', 'f9596d96-ad8c-4d77-9d69-c59aa4d064ed', 'a92c02ac-fb14-4739-b2ed-0846c8ac8aec']
+  Explanation: The retrieval system failed to rank the relevant document
+    in the top results. This may be due to vocabulary mismatch between
+    the query and the stored chunks, or insufficient semantic overlap.
+
+Results saved to /home/alumno/Desktop/datos/NLP/Assigment 3/eval/../results/eval_results.json
