@@ -1,0 +1,23 @@
+[project]
+name = "rag-document-intelligence"
+version = "1.0.0"
+description = "RAG-based Question Answering system with document upload, indexing, and retrieval evaluation"
+requires-python = ">=3.10"
+
+dependencies = [
+    # --- RAG System (Flask backend) ---
+    "flask>=3.1.0",
+    "minio>=7.2.12",
+    "pdfplumber>=0.11.4",
+    "python-docx>=1.1.2",
+    "chromadb-client>=1.5.2",
+    "sentence-transformers>=3.3.0",
+    "requests>=2.32.0",
+    "torch>=2.5.0",
+
+    # --- Evaluation: document generation ---
+    "reportlab>=4.0",
+
+    # --- Frontend ---
+    "streamlit>=1.41.0",
+]

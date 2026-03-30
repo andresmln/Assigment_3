@@ -1,201 +1,128 @@
-# 📄 RAG Document Intelligence System
+# RAG Document Intelligence System
 
-A complete, locally-running **Retrieval-Augmented Generation (RAG)** system for document question-answering. Upload PDF and DOCX files, ask natural-language questions, and receive **grounded answers with source citations**.
+A Question Answering system based on Retrieval-Augmented Generation (RAG) that allows users to upload documents (PDF/DOCX), index them, and ask questions about their content using a local LLM.
 
-All services run locally via Docker — **no external APIs, no cloud costs**.
+## Architecture
 
-## 🏗️ Architecture
+The system is composed of 5 services orchestrated with Docker Compose:
+
+| Service | Technology | Port | Description |
+|---------|------------|------|-------------|
+| **MinIO** | minio/minio | 9000 / 9001 | Object storage for the original documents |
+| **ChromaDB** | chromadb/chroma | 8000 | Vector database for chunk embeddings |
+| **LLM** | llama.cpp | 8080 | Inference server running the Qwen2.5-3B model (Q4_K_M) |
+| **Flask API** | Flask + Python 3.11 | 5000 | REST API that orchestrates the RAG pipeline |
+| **Frontend** | Streamlit | 8501 | Web interface for uploading documents and asking questions |
+
+## Project Structure
 
 ```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Streamlit  │────▶│  Flask API   │────▶│   MinIO      │
-│   Frontend   │     │  (port 5000) │     │  (port 9000) │
-│  (port 8501) │     │              │     │  Object Store │
-└──────────────┘     │  Orchestrator│     └──────────────┘
-                     │              │
-                     │  ┌────────┐  │     ┌──────────────┐
-                     │  │SQLite  │  │────▶│  ChromaDB    │
-                     │  │Metadata│  │     │  (port 8000) │
-                     │  └────────┘  │     │  Vector Store │
-                     │              │     └──────────────┘
-                     │              │
-                     │              │     ┌──────────────┐
-                     │              │────▶│  llama.cpp   │
-                     │              │     │  (port 8080) │
-                     └──────────────┘     │  LLM Server  │
-                                          └──────────────┘
+.
+├── docker-compose.yml          # Service orchestration
+├── flask_app/                  # Backend - RAG system REST API
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── app.py                  # Endpoints: /documents, /query, /health
+│   ├── config.py               # Configuration via environment variables
+│   ├── ingestion.py            # PDF/DOCX parsing and MinIO storage
+│   ├── chunking.py             # Chunking strategies (fixed_size, recursive)
+│   ├── retrieval.py            # Embeddings (BGE-base-en-v1.5) + ChromaDB search
+│   └── llm_client.py           # Client for the llama.cpp server (OpenAI-compatible API)
+├── frontend/                   # Frontend - Streamlit web interface
+│   ├── Dockerfile
+│   └── app.py                  # UI with tabs: Upload, Documents, Ask Questions
+├── models/                     # LLM models in GGUF format
+│   └── qwen2.5-3b-instruct-q4_k_m.gguf
+├── eval/                       # Retrieval evaluation
+│   ├── eval_dataset.json       # Dataset with 15 questions and ground truth
+│   ├── run_eval.py             # Evaluation script (Hit Rate, MRR, Precision @k)
+│   ├── create_eval_docs.py     # Evaluation document generation
+│   └── sample_docs/            # Sample documents for evaluation
+│       ├── artificial_intelligence_overview.pdf
+│       ├── climate_change_report.pdf
+│       └── python_programming_guide.docx
+├── results/                    # Evaluation results
+│   └── eval_results.json
+├── data/                       # Assignment 2 data (Human Value Detection)
+│   ├── arguments-*.tsv
+│   ├── labels-*.tsv
+│   └── value-categories.json
+├── report/                     # Project report in LaTeX
+│   └── main.tex
+├── Assigment 2.ipynb           # Assignment 2 notebook
+├── assignment2_complete.py     # Assignment 2 complete script
+└── assignment 3.pdf            # Assignment 3 specification
 ```
 
-### Pipeline Stages
+## RAG Pipeline
 
-1. **Ingest** — Parse PDF/DOCX, detect scanned PDFs, store raw files in MinIO
-2. **Chunk** — Fixed-size (512 words, 50 overlap) or recursive splitting
-3. **Index** — Embed with `all-MiniLM-L6-v2`, store in ChromaDB
-4. **Retrieve** — Cosine similarity search, return top-k chunks
-5. **Generate** — Build grounded prompt, call llama.cpp, return cited answer
+1. **Ingestion**: The user uploads a PDF or DOCX file. Text is extracted (pdfplumber / python-docx) and the original file is stored in MinIO.
+2. **Chunking**: The text is split into fragments using one of two strategies:
+   - `fixed_size`: sliding window of 512 words with 50-word overlap.
+   - `recursive`: hierarchical splitting by paragraphs, sentences, and words.
+3. **Indexing**: Each chunk is converted into an embedding using `BAAI/bge-base-en-v1.5` (Sentence Transformers) and stored in ChromaDB with metadata.
+4. **Retrieval**: Given a question, the query embedding is generated and the top-k most similar chunks are retrieved (cosine similarity) with deduplication.
+5. **Generation**: The relevant chunks are sent as context to the LLM (Qwen2.5-3B via llama.cpp) to generate an answer with `[Source N]` citations.
 
-## 🚀 Quick Start
+## Usage
 
-### 1. Clone the repository
+### Prerequisites
+
+- Python >= 3.10
+- Docker and Docker Compose
+- The GGUF model file at `models/qwen2.5-3b-instruct-q4_k_m.gguf`
+
+### Setup (local Python environment)
+
+Create and activate a virtual environment, then install all dependencies from `pyproject.toml`:
 
 ```bash
-git clone <your-repo-url>
-cd "Assigment 3"
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
 ```
 
-### 2. Download the LLM model
+> **Note (Debian/Ubuntu):** If `python3 -m venv` fails, install the venv package first:
+> ```bash
+> sudo apt install python3-venv
+> ```
 
-Download the **TinyLlama-1.1B-Chat** GGUF model (~670 MB):
+### Start the Services (Docker)
+
+The RAG system runs as 5 Docker containers. Launch everything with:
 
 ```bash
-# Create models directory if it doesn't exist
-mkdir -p models
-
-# Download the model
-wget -O models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf \
-  https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+docker compose up --build
 ```
 
-> ⚠️ **Do NOT commit model files to Git.** They are 670 MB+ and are excluded via `.gitignore`.
+### Access the Application
 
-### 3. Start all services
+- **Frontend (Streamlit)**: http://localhost:8501
+- **REST API (Flask)**: http://localhost:5000
+- **MinIO Console**: http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
+- **ChromaDB**: http://localhost:8000
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/documents` | Upload a PDF/DOCX document |
+| `GET` | `/documents` | List indexed documents |
+| `DELETE` | `/documents/<id>` | Delete a document and its chunks |
+| `POST` | `/query` | Ask a question about the documents |
+| `GET` | `/health` | Health check for all services |
+
+### Run the Evaluation
+
+With the Docker services running and the virtual environment activated:
 
 ```bash
-docker-compose up --build
-```
-
-This starts **5 services**:
-
-| Service      | Port | URL                        |
-|-------------|------|----------------------------|
-| Flask API   | 5000 | http://localhost:5000       |
-| MinIO       | 9000 | http://localhost:9000       |
-| MinIO Console| 9001| http://localhost:9001       |
-| ChromaDB    | 8000 | http://localhost:8000       |
-| LLM Server  | 8080 | http://localhost:8080       |
-| Frontend    | 8501 | http://localhost:8501       |
-
-### 4. Verify everything is running
-
-```bash
-curl http://localhost:5000/health
-```
-
-## 📡 API Endpoints
-
-### Health Check
-
-```bash
-curl http://localhost:5000/health
-```
-
-### Upload a Document
-
-```bash
-# Upload a PDF
-curl -X POST -F "file=@document.pdf" http://localhost:5000/documents
-
-# Upload a DOCX with recursive chunking
-curl -X POST -F "file=@document.docx" -F "strategy=recursive" http://localhost:5000/documents
-```
-
-### List Documents
-
-```bash
-curl http://localhost:5000/documents
-```
-
-### Delete a Document
-
-```bash
-curl -X DELETE http://localhost:5000/documents/<document-id>
-```
-
-### Query (Ask a Question)
-
-```bash
-curl -X POST http://localhost:5000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is machine learning?", "top_k": 5}'
-```
-
-**Response format:**
-```json
-{
-    "question": "What is machine learning?",
-    "answer": "Based on the documents, machine learning is... [Source 1]",
-    "sources": [
-        {
-            "doc_id": "abc-123",
-            "filename": "ai_overview.pdf",
-            "chunk_index": 3,
-            "score": 0.8542,
-            "text": "Machine learning is a subset of AI..."
-        }
-    ],
-    "num_sources": 5
-}
-```
-
-## 🧪 Evaluation
-
-### Run Retrieval Evaluation
-
-```bash
-# First upload the evaluation documents, then:
 python eval/run_eval.py
 ```
 
-Results are saved to `results/eval_results.json` with:
-- **Hit Rate @k** — Did the relevant doc appear in top-k?
-- **MRR** — Mean Reciprocal Rank
-- **Precision @k** — Fraction of relevant results in top-k
+Computes Hit Rate @k, MRR @k, and Precision @k for k = {1, 3, 5} on a dataset of 15 questions with ground truth across 3 sample documents (AI, Climate Change, Python).
 
-## 🛠️ Technical Details
+## Authors
+Andrés Malón Insausti & Roberto Aldanondo
 
-| Component       | Technology                              |
-|----------------|----------------------------------------|
-| LLM            | TinyLlama-1.1B-Chat (Q4_K_M GGUF)     |
-| LLM Server     | llama.cpp (llama-server)               |
-| Embeddings     | all-MiniLM-L6-v2 (sentence-transformers) |
-| Vector Store   | ChromaDB                                |
-| Object Store   | MinIO                                   |
-| API Framework  | Flask                                   |
-| Frontend       | Streamlit                               |
-| PDF Parsing    | pdfplumber                              |
-| DOCX Parsing   | python-docx                             |
-| Metadata       | SQLite                                  |
 
-## ⚠️ Known Limitations
-
-1. **TinyLlama (1.1B)** is a small model — answer quality improves significantly with larger models (e.g., Mistral-7B)
-2. **No OCR support** — scanned PDFs are detected and rejected with an error message
-3. **CPU-only inference** — generation can take 15-60 seconds depending on hardware
-4. **Fixed embedding model** — `all-MiniLM-L6-v2` works well for English but is limited for multilingual content
-5. **No authentication** — the API has no auth layer (intended for local development)
-
-## 📁 Project Structure
-
-```
-├── docker-compose.yml          # Orchestrates all 5 services
-├── flask_app/
-│   ├── Dockerfile              # Flask container
-│   ├── requirements.txt        # Python dependencies
-│   ├── app.py                  # Flask API (5 endpoints)
-│   ├── config.py               # Environment configuration
-│   ├── ingestion.py            # PDF/DOCX parsing + MinIO
-│   ├── chunking.py             # Fixed-size + recursive chunking
-│   ├── retrieval.py            # Embeddings + ChromaDB search
-│   └── llm_client.py           # llama.cpp HTTP client
-├── frontend/
-│   ├── Dockerfile              # Streamlit container
-│   └── app.py                  # Web UI
-├── models/                     # GGUF model files (NOT committed)
-├── eval/
-│   ├── eval_dataset.json       # Annotated evaluation questions
-│   └── run_eval.py             # Evaluation metrics script
-├── results/                    # Evaluation output
-├── report/                     # Technical report
-├── .gitignore
-└── README.md
-```
