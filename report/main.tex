@@ -23,12 +23,41 @@
 
 % ── Document ───────────────────────────────────────────────────────────────────
 \begin{document}
+\begin{titlepage}
+    \begin{flushleft}
+            \includegraphics[width=3cm]{logo_upna.jpg} % Ajusta el tamaño según necesites
+        \end{flushleft}
+    
+    \begin{center}
+        \vspace*{1cm}
+            
+        \Huge
+        \textbf{Assignment 3: Document RAG System}
+            
+        \vspace{0.5cm}
 
-\begin{center}
-  {\LARGE \textbf{Assignment 3: Document RAG System}} \\[4pt]
-  {\large NLP Master's Programme} \\[2pt]
-  {\normalsize \today}
-\end{center}
+        %\textbf{MULTI-LABEL TEXT CLASSIFICATION WITH BILSTM AND DISTILBERT}
+        
+
+         %\vspace{1cm}
+        \LARGE
+        NATURAL LANGUAGE PROCESSING 25/26
+            
+        \vspace{0.5cm}
+        \includegraphics[width=12cm, height=12cm]{Imagen Portada.png}
+        
+            
+        \vfill
+
+        \vspace{0.5cm}
+        \textbf{Roberto Aldanondo \& Andrés Malón}
+        \vspace{0.5cm}
+        
+        {\large March 2026}
+            
+    \end{center}
+\end{titlepage}
+
 \vspace{6pt}
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -503,5 +532,10 @@ services by polling \texttt{GET /health}, which proved invaluable during
 debugging when services were partially degraded.
 The frontend is containerised with its own Dockerfile and declared as the
 fifth service in \texttt{docker-compose.yml}, reachable at port~8501.
+
+
+\section*{Code Repository}
+The full source code is available at:
+\url{https://github.com/andresmln/Assigment_3}
 
 \end{document}

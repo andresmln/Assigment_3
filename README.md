@@ -1,5 +1,7 @@
 # RAG Document Intelligence System
 
+> Repository: https://github.com/andresmln/Assigment_3
+
 A Question Answering system based on Retrieval-Augmented Generation (RAG) that allows users to upload documents (PDF/DOCX), index them, and ask questions about their content using a local LLM.
 
 ## Architecture
